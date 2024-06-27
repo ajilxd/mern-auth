@@ -1,5 +1,31 @@
 {
+  "name": "mern-auth",
+  "version": "1.0.1",
+  "description": "mern project",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon api/index.js",
+    "client": "npm run dev --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajilxd/mern-auth.git"
+  },
+  "keywords": [
+    "jwt",
+    "mern",
+    "auth",
+    "mongodb"
+  ],
+  "author": "ajil pramod",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajilxd/mern-auth/issues"
+  },
+  "homepage": "https://github.com/ajilxd/mern-auth#readme",
   "dependencies": {
-    "react-router-dom": "^6.24.0"
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4"
   }
 }
