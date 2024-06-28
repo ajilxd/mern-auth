@@ -26,6 +26,8 @@
   "homepage": "https://github.com/ajilxd/mern-auth#readme",
   "dependencies": {
     "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.4.4",
     "nodemon": "^3.1.4"
   }
 }

@@ -1,0 +1,1 @@
+mongodb+srv://ajilpramodone:Harsh@Nubin@cluster0.sqdi5mg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
