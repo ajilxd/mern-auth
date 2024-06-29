@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
+import { errorHandler } from "../utils/error.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const newUser = new User({
     username,
@@ -11,7 +12,6 @@ export const signup = async (req, res) => {
     await newUser.save();
     res.status(200).json({ message: "User created successfully" });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: "Failed to create user" });
+    next(error);
   }
 };
