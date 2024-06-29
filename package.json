@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "mern project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon api/index.js",
@@ -25,6 +26,7 @@
   },
   "homepage": "https://github.com/ajilxd/mern-auth#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
     "mongoose": "^8.4.4",
