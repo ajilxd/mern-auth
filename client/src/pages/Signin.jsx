@@ -1,19 +1,27 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
+import {
+  signinStart,
+  signinFailure,
+  signinSuccess,
+} from "../redux/user/userSlice";
+
+import { useDispatch, useSelector } from "react-redux";
 function Signin() {
   const [formData, setFormData] = useState({});
-  const [errori, setErrori] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   function handleChange(event) {
     setFormData({ ...formData, [event.target.id]: event.target.value });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      setIsLoading(true);
+      dispatch(signinStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -22,21 +30,20 @@ function Signin() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      setIsLoading(false);
-      setErrori(false);
+      dispatch(signinSuccess(data));
       if (data.success == false) {
-        setErrori(true);
+        dispatch(signinFailure(data));
         return;
       }
 
       navigate("/");
     } catch (error) {
-      setIsLoading(false);
-      setErrori(true);
+      dispatch(signinFailure(error));
       return;
     }
   };
   // console.log(formData);
+  console.log(error);
   return (
     <div className="p-4 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7">Sign in</h1>
@@ -57,9 +64,9 @@ function Signin() {
         />
         <button
           className="bg-slate-700 p-1 rounded-lg text-white hover:opacity-90"
-          disabled={isLoading}
+          disabled={loading}
         >
-          {isLoading ? "Loading..." : "Sign up"}
+          {loading ? "Loading..." : "Sign up"}
         </button>
       </form>
       <div className="flex gap-2 mt-3">
@@ -68,7 +75,7 @@ function Signin() {
           <span className="text-blue-500">Sign up</span>
         </Link>
       </div>
-      <p className="text-red-500">{errori && "Something went wrong"}</p>
+      <p className="text-red-500">{error ? error.message : ""}</p>
     </div>
   );
 }
