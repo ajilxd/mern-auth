@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function Signup() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [errori, setErrori] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,14 +25,16 @@ function Signup() {
       setErrori(false);
       if (data.success == false) {
         setErrori(true);
+        return;
       }
+      navigate("/signin");
       console.log("user created succesfully");
     } catch (error) {
       setIsLoading(false);
       setErrori(true);
     }
   };
-  // console.log(formData);
+
   return (
     <div className="p-4 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7">Sign up</h1>
