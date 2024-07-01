@@ -29,6 +29,7 @@
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "concurrently": "^8.2.2",
+    "cookieparser": "^0.1.0",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
