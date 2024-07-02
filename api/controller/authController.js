@@ -79,3 +79,10 @@ export const google = async (req, res, next) => {
     next(error);
   }
 };
+
+export const signout = function (req, res) {
+  res
+    .clearCookie("access_token")
+    .status(200)
+    .json({ message: "signout success" });
+};

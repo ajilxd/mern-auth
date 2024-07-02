@@ -11,7 +11,7 @@ import OAuth from "../components/OAuth";
 function Signin() {
   const [formData, setFormData] = useState({});
 
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   function handleChange(event) {
@@ -20,7 +20,6 @@ function Signin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(error);
     try {
       dispatch(signinStart());
       const res = await fetch("/api/auth/signin", {
@@ -44,7 +43,7 @@ function Signin() {
     }
   };
   // console.log(formData);
-  console.log(error);
+  // console.log(error);
   return (
     <div className="p-4 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7">Sign in</h1>

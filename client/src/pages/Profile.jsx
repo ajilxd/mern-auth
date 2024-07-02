@@ -14,6 +14,7 @@ import {
   updateUserStart,
   deleteUserFailture,
   deleteUserSuccess,
+  signOut,
 } from "../redux/user/userSlice.js";
 function Profile() {
   const dispatch = useDispatch();
@@ -86,11 +87,18 @@ function Profile() {
     return <div>Loading...</div>;
   }
 
-  function handleChange(e) {
+  async function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   }
   // console.log(formData);
-
+  async function handleSignOut() {
+    try {
+      await fetch("/api/auth/signout");
+      dispatch(signOut());
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async function handleDelete() {
     try {
       dispatch(deleteUserStart());
@@ -174,7 +182,9 @@ function Profile() {
         <span className="text-red-700 cursor-pointer" onClick={handleDelete}>
           Delete account
         </span>
-        <span className="text-blue-700 cursor-pointer">signout</span>
+        <span className="text-blue-700 cursor-pointer" onClick={handleSignOut}>
+          signout
+        </span>
       </div>
       <p className="text-red-700 mt-5 text-center">
         {error && "something went wrong"}
