@@ -1,8 +1,11 @@
 // update user details
-import User from "../models/userModel";
-import { errorHandler } from "../utils/error";
+import User from "../models/userModel.js";
+import { errorHandler } from "../utils/error.js";
 
 export const updateUser = async (req, res, next) => {
+  console.log(
+    "hgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
+  );
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "you can update only your account"));
   }

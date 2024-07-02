@@ -1,20 +1,29 @@
 import { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { app } from "../firebase";
-
+import { app } from "../firebase.js";
+import {
+  signinSuccess,
+  updateUserFailture,
+  updateUserSuccess,
+  upddateUserStart,
+} from "../redux/user/userSlice.js";
 function Profile() {
+  const dispatch = useDispatch();
   const fileRef = useRef(null);
-  const { currentUser } = useSelector((state) => state.user.user);
+  const { currentUser, loading, error } = useSelector(
+    (state) => state.user.user
+  );
   const [image, setImage] = useState(undefined);
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   console.log(formData);
   useEffect(() => {
     if (image) {
@@ -46,15 +55,39 @@ function Profile() {
     );
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // Handle form submission logic here
+
+    try {
+      dispatch(upddateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailture(data.message));
+        return;
+      }
+      dispatch(signinSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailture(error));
+    }
   }
 
   if (!currentUser) {
     return <div>Loading...</div>;
   }
 
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  }
+  console.log(formData);
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7">Profile</h1>
@@ -92,6 +125,7 @@ function Profile() {
           id="username"
           placeholder="Username"
           className="bg-slate-100 rounded-lg p-3"
+          onChange={handleChange}
         />
         <input
           defaultValue={currentUser.email}
@@ -99,24 +133,32 @@ function Profile() {
           id="email"
           placeholder="email"
           className="bg-slate-100 rounded-lg p-3"
+          onChange={handleChange}
         />
         <input
           type="password"
           id="password"
           placeholder="Password"
           className="bg-slate-100 rounded-lg p-3"
+          onChange={handleChange}
         />
         <button
           type="submit"
           className="bg-slate-700 text-white p-1 rounded-md hover:opacity-90 disabled:opacity-80"
         >
-          Update
+          {loading ? "Loading..." : "Update"}
         </button>
       </form>
       <div className="flex justify-between my-3">
         <span className="text-red-700 cursor-pointer">Delete account</span>
         <span className="text-blue-700 cursor-pointer">signout</span>
       </div>
+      <p className="text-red-700 mt-5 text-center">
+        {error && "something went wrong"}
+      </p>
+      <p className="text-green-700 mt-5 text-center">
+        {updateSuccess && "user details updated succesfully"}
+      </p>
     </div>
   );
 }
