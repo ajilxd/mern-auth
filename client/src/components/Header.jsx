@@ -19,7 +19,7 @@ function Header() {
           <Link to="/about">
             <li>about</li>
           </Link>
-          <Link to="/signin">signin</Link>
+
           {currentUser ? (
             <img
               src={currentUser.profilePicture}
@@ -27,7 +27,7 @@ function Header() {
               className="h-7 w-7 rounded-full"
             />
           ) : (
-            <li>signin</li>
+            <Link to="/signin">signin</Link>
           )}
         </ul>
       </div>

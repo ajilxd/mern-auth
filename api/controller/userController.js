@@ -34,3 +34,19 @@ export const updateUser = async (req, res, next) => {
     console.log(error.message);
   }
 };
+
+export const deleteUser = async (req, res) => {
+  console.log("jojhfkjiosdj");
+  if (req.user.id !== req.params.id) {
+    console.log("gdfgffd");
+    return next(errorHandler(401, "access denied"));
+  }
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    console.log("huuu");
+    res.status(200).json("User has been deleted");
+  } catch (error) {
+    console.log("gdsfgsfd");
+    next(error);
+  }
+};

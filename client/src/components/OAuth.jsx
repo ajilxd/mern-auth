@@ -26,7 +26,7 @@ function OAuth() {
       });
       const data = await res.json();
       dispatch(signinSuccess(data));
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error("couldnt connect with google");
     }

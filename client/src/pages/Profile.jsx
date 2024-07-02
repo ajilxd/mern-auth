@@ -8,10 +8,12 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase.js";
 import {
-  signinSuccess,
+  deleteUserStart,
   updateUserFailture,
   updateUserSuccess,
-  upddateUserStart,
+  updateUserStart,
+  deleteUserFailture,
+  deleteUserSuccess,
 } from "../redux/user/userSlice.js";
 function Profile() {
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ function Profile() {
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  console.log(formData);
+  // console.log(formData);
   useEffect(() => {
     if (image) {
       handleFileUpload(image);
@@ -59,7 +61,7 @@ function Profile() {
     e.preventDefault();
 
     try {
-      dispatch(upddateUserStart());
+      dispatch(updateUserStart());
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "POST",
         headers: {
@@ -73,7 +75,7 @@ function Profile() {
         dispatch(updateUserFailture(data.message));
         return;
       }
-      dispatch(signinSuccess(data));
+      dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailture(error));
@@ -87,7 +89,26 @@ function Profile() {
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   }
-  console.log(formData);
+  // console.log(formData);
+
+  async function handleDelete() {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailture(data));
+        return;
+      }
+      dispatch(deleteUserSuccess());
+      localStorage.removeitem("token");
+      window.location.href = "/";
+    } catch (error) {
+      dispatch(deleteUserFailture(error));
+    }
+  }
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7">Profile</h1>
@@ -150,7 +171,9 @@ function Profile() {
         </button>
       </form>
       <div className="flex justify-between my-3">
-        <span className="text-red-700 cursor-pointer">Delete account</span>
+        <span className="text-red-700 cursor-pointer" onClick={handleDelete}>
+          Delete account
+        </span>
         <span className="text-blue-700 cursor-pointer">signout</span>
       </div>
       <p className="text-red-700 mt-5 text-center">

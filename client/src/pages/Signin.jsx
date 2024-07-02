@@ -20,7 +20,7 @@ function Signin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(error);
     try {
       dispatch(signinStart());
       const res = await fetch("/api/auth/signin", {
@@ -37,7 +37,7 @@ function Signin() {
         return;
       }
 
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       dispatch(signinFailure(error));
       return;
@@ -67,7 +67,7 @@ function Signin() {
           className="bg-slate-700 p-1 rounded-lg text-white hover:opacity-90"
           disabled={loading}
         >
-          {loading ? "Loading..." : "Sign up"}
+          {loading ? "Loading..." : "Sign in"}
         </button>
         <OAuth />
       </form>
