@@ -3,9 +3,6 @@ import User from "../models/userModel.js";
 import { errorHandler } from "../utils/error.js";
 
 export const updateUser = async (req, res, next) => {
-  console.log(
-    "hgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
-  );
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "you can update only your account"));
   }
@@ -36,17 +33,13 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res) => {
-  console.log("jojhfkjiosdj");
   if (req.user.id !== req.params.id) {
-    console.log("gdfgffd");
     return next(errorHandler(401, "access denied"));
   }
   try {
     await User.findByIdAndDelete(req.params.id);
-    console.log("huuu");
     res.status(200).json("User has been deleted");
   } catch (error) {
-    console.log("gdsfgsfd");
     next(error);
   }
 };

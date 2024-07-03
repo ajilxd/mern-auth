@@ -28,8 +28,8 @@ export const signin = async (req, res, next) => {
   if (!validPassword) return next(errorHandler(401, "wrong credentials"));
   const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
   const user = validUser.toObject();
-  delete user.password; // Explicitly delete the password field
-  const maxAge = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+  delete user.password;
+  const maxAge = 24 * 60 * 60 * 1000;
 
   res
     .cookie("access_token", token, { httpOnly: true, maxAge: maxAge })
