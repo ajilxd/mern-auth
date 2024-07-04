@@ -9,7 +9,10 @@ async function adminLogin(req, res) {
     validAdmin.password == password
   ) {
     console.log("ajil");
-    const token = jwt.sign({ id: validAdmin._id }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { id: validAdmin._id, role: "admin" },
+      process.env.JWT_SECRET
+    );
     const maxAge = 24 * 60 * 60 * 1000;
     res
       .cookie("admin_access_token", token, { httpOnly: true, maxAge: maxAge })
