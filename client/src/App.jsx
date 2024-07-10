@@ -7,6 +7,9 @@ import About from "./pages/About";
 import Header from "./components/Header";
 import AdminLogin from "./pages/admin/AdminLogin";
 import PrivateRoute from "./components/PrivateRoute";
+import Dashboard from "./pages/admin/Dashboard";
+import EditUser from "./pages/admin/EditUser";
+
 function App() {
   return (
     <BrowserRouter>
@@ -22,7 +25,11 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<Home />} />
         </Route>
-        <Route path="/admin" element={<AdminLogin />}></Route>
+        <Route path="/admin">
+          <Route index element={<AdminLogin />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="edit/:id" element={<EditUser />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

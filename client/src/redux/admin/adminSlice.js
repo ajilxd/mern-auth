@@ -10,8 +10,8 @@ const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
-    adminSigninSuccess: (state, action) => {
-      state.currentUser = action.payload;
+    adminSigninSuccess: (state) => {
+      state.currentUser = "admin";
       state.error = false;
     },
     adminSigninFailture: (state, action) => {

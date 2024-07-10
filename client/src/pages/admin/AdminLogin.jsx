@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { adminSigninSuccess } from "../../redux/admin/adminSlice";
+import { useDispatch } from "react-redux";
 
 function AdminLogin() {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState();
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     const res = await fetch("/api/admin/login", {
       method: "POST",
       headers: {
@@ -12,6 +16,9 @@ function AdminLogin() {
       body: JSON.stringify(formData),
     });
     const data = await res.json();
+    console.log("hiiiii");
+    console.log(data);
+    if (data === true) dispatch(adminSigninSuccess());
   }
 
   function handleChange(e) {
