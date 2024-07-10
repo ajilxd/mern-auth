@@ -76,4 +76,14 @@ async function updateUser(req, res) {
   }
 }
 
-export { adminLogin, usersFinder, editUser, updateUser };
+async function deleteUser(req, res) {
+  try {
+    await User.deleteOne({ _id: req.params.id });
+    res.status(200).json("user deleted succesfully");
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json("internal servor error");
+  }
+}
+
+export { adminLogin, usersFinder, editUser, updateUser, deleteUser };

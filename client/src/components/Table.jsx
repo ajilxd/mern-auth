@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Table() {
   const [users, setUsers] = useState([]);
@@ -13,6 +14,33 @@ function Table() {
     } catch (error) {
       console.error("Error fetching users:", error);
     }
+  }
+
+  async function deleteUser(id) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are about to delete this user. This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        console.log("Delete confirmed");
+        const res = await fetch(`/api/admin/delete/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        getUsers();
+        console.log(data);
+      } else {
+        console.log("Delete canceled");
+      }
+    });
   }
 
   useEffect(() => {
@@ -70,6 +98,12 @@ function Table() {
                   className="text-indigo-600 hover:text-indigo-900"
                 >
                   Edit
+                </button>
+                <button
+                  onClick={() => deleteUser(user._id)}
+                  className="px-3 text-red-600 hover:text-red-900"
+                >
+                  Delete
                 </button>
               </td>
             </tr>
