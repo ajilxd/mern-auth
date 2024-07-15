@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentUser: null,
+  currentUser: "",
   loading: false,
   error: null,
 };
@@ -17,9 +17,13 @@ const adminSlice = createSlice({
     adminSigninFailture: (state, action) => {
       state.error = action.payload;
     },
+    adminSignoutSuccess: (state) => {
+      state.currentUser = "";
+    },
   },
 });
 
-export const { adminSigninFailture, adminSigninSuccess } = adminSlice.actions;
+export const { adminSigninFailture, adminSigninSuccess, adminSignoutSuccess } =
+  adminSlice.actions;
 
 export default adminSlice.reducer;

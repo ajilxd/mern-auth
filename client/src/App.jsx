@@ -4,31 +4,40 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
-import Header from "./components/Header";
 import AdminLogin from "./pages/admin/AdminLogin";
 import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./pages/admin/Dashboard";
 import EditUser from "./pages/admin/EditUser";
+import CreateUser from "./pages/admin/CreateUser";
+import HeaderRoute from "./components/HeaderRoute";
+import AdminHeaderRoute from "./components/AdminHeaderRoute";
+import AdminPrivateRoute from "./components/adminPrivateRoute";
 
 function App() {
   return (
     <BrowserRouter>
-      <Header></Header>
       <Routes>
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile" element={<Profile />} />
+        <Route element={<HeaderRoute />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/signin" element={<Signin />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
+
         <Route element={<PrivateRoute />}>
-          <Route path="/home" element={<Home />} />
+          <Route element={<HeaderRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/home" element={<Home />} />
+          </Route>
         </Route>
-        <Route path="/admin">
-          <Route index element={<AdminLogin />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="edit/:id" element={<EditUser />} />
+
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route element={<AdminPrivateRoute />}>
+          <Route element={<AdminHeaderRoute />}>
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/edit/:id" element={<EditUser />} />
+            <Route path="/admin/createuser" element={<CreateUser />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

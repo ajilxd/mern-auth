@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcryptjs from "bcrypt";
 async function adminLogin(req, res) {
   const { email, password } = req.body;
+  console.log(req.body);
   const validAdmin = await User.findOne({ email });
   if (
     validAdmin &&
@@ -28,7 +29,10 @@ async function adminLogin(req, res) {
 async function usersFinder(req, res) {
   console.log("in the user finder function");
   try {
-    const data = await User.find().sort({ id: -1 });
+    const data = await User.find({ username: { $ne: "admin" } }).sort({
+      id: -1,
+    });
+
     // console.log(data);
     res.status(200).json(data);
   } catch (error) {
@@ -86,4 +90,36 @@ async function deleteUser(req, res) {
   }
 }
 
-export { adminLogin, usersFinder, editUser, updateUser, deleteUser };
+async function addUser(req, res, next) {
+  console.log("admin create user section");
+  const { username, email, password } = req.body;
+  const newUser = new User({
+    username,
+    email,
+    password,
+  });
+  try {
+    await newUser.save();
+    res
+      .status(200)
+      .json({ message: "User created successfully", success: true });
+  } catch (error) {
+    res.status(500).json({ message: "server crashed !!!", success: false });
+  }
+}
+
+async function signoutHandler(req, res) {
+  res
+    .clearCookie("admin_access_token")
+    .status(200)
+    .json({ message: "signout success", success: true });
+}
+export {
+  adminLogin,
+  usersFinder,
+  editUser,
+  updateUser,
+  deleteUser,
+  addUser,
+  signoutHandler,
+};

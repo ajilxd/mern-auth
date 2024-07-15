@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 
 function Table() {
   const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   async function getUsers() {
@@ -15,6 +16,10 @@ function Table() {
       console.error("Error fetching users:", error);
     }
   }
+
+  const filteredUsers = users.filter((val) => {
+    return val.username.toLowerCase().startsWith(searchTerm.toLowerCase());
+  });
 
   async function deleteUser(id) {
     Swal.fire({
@@ -49,6 +54,19 @@ function Table() {
 
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg">
+      <input
+        type="search"
+        placeholder="Search by User Name"
+        className="border border-gray-300 px-4 py-2 rounded m-4"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <button
+        className="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700"
+        onClick={() => navigate(`/admin/createuser`)}
+      >
+        Create user
+      </button>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -70,7 +88,7 @@ function Table() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {users.map((user, index) => (
+          {filteredUsers.map((user, index) => (
             <tr key={user._id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { adminSigninSuccess } from "../../redux/admin/adminSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function AdminLogin() {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState();
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,9 +18,12 @@ function AdminLogin() {
       body: JSON.stringify(formData),
     });
     const data = await res.json();
-    console.log("hiiiii");
-    console.log(data);
-    if (data === true) dispatch(adminSigninSuccess());
+    // console.log("hiiiii");
+    // console.log(data);
+    if (data === true) {
+      dispatch(adminSigninSuccess());
+      navigate("/admin/dashboard");
+    }
   }
 
   function handleChange(e) {
