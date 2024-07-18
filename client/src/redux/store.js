@@ -3,8 +3,13 @@ import userReducer from "../redux/user/userSlice.js";
 import adminReducer from "../redux/admin/adminSlice.js";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import counterReducer from "./counter/counterSlice.js";
 
-const rootReducer = combineReducers({ user: userReducer, admin: adminReducer });
+const rootReducer = combineReducers({
+  user: userReducer,
+  admin: adminReducer,
+  counter: counterReducer,
+});
 
 const persistConfig = {
   key: "root",

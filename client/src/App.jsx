@@ -11,7 +11,8 @@ import EditUser from "./pages/admin/EditUser";
 import CreateUser from "./pages/admin/CreateUser";
 import HeaderRoute from "./components/HeaderRoute";
 import AdminHeaderRoute from "./components/AdminHeaderRoute";
-import AdminPrivateRoute from "./components/adminPrivateRoute";
+import AdminPrivateRoute from "./components/AdminPrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 
 function App() {
   return (
@@ -20,10 +21,11 @@ function App() {
         <Route element={<HeaderRoute />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
-
+        <Route element={<PublicRoute />}>
+          <Route path="/signin" element={<Signin />} />
+        </Route>
         <Route element={<PrivateRoute />}>
           <Route element={<HeaderRoute />}>
             <Route path="/profile" element={<Profile />} />

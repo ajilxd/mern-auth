@@ -32,11 +32,13 @@
     "cookie-parser": "^1.4.6",
     "cookieparser": "^0.1.0",
     "dotenv": "^16.4.5",
+    "formik": "^2.4.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
     "nodemon": "^3.1.4",
     "react-dom": "^18.3.1",
     "redux-persist": "^6.0.0",
-    "sweetalert2": "^11.12.2"
+    "sweetalert2": "^11.12.2",
+    "yup": "^1.4.0"
   }
 }
